@@ -1,0 +1,30 @@
+/* Mega Ad Styles  ----------------------------------- */
+#mega_ad_wrap {
+  cursor: pointer;
+  z-index: 6000;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  background-position: center top;
+  background-size: cover;
+  min-height: 100%; }
+  #mega_ad_wrap img {
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; }
+
+#dismiss {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+  z-index: 5500;
+  overflow: hidden;
+  width: 80px;
+  height: 80px; }
