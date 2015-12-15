@@ -1,34 +1,32 @@
 <?php
-
 /**
- * Helper function to provide directory path to CMB
- * @since  2.0.0
- * @param  string  $path Path to append
- * @return string        Directory with optional path appended
+ * Bootstraps the CMB2 process
+ *
+ * @category  WordPress_Plugin
+ * @package   CMB2
+ * @author    WebDevStudios
+ * @license   GPL-2.0+
+ * @link      http://webdevstudios.com
  */
-function cmb2_dir( $path = '' ) {
-	static $cmb2_dir = null;
-	if ( is_null( $cmb2_dir ) ) {
-		$cmb2_dir = trailingslashit( dirname( __FILE__ ) );
-	}
-	return $cmb2_dir . $path;
+
+if ( is_admin() ) {
+	/**
+	 * Fires on the admin side when CMB2 is included/loaded.
+	 *
+	 * In most cases, this should be used to add metaboxes. See example-functions.php
+	 */
+	do_action( 'cmb2_admin_init' );
 }
-
-/**
- * Include helper functions,
- * and more importantly, the class/file autoloader
- */
-require_once cmb2_dir( 'includes/helper-functions.php' );
 
 /**
  * Fires when CMB2 is included/loaded
  *
- * Should be used to to add metaboxes. See example-functions.php
+ * Can be used to add metaboxes if needed on the front-end or needed on the front and backend.
  */
 do_action( 'cmb2_init' );
 
 /**
- * For back-compat. Does the dirtywork of instantiatiating all the
+ * For back-compat. Does the dirtywork of instantiating all the
  * CMB2 instances for the cmb2_meta_boxes filter
  * @since  2.0.2
  */

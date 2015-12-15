@@ -1,12 +1,12 @@
 <?php
 /**
- * Include and setup custom metaboxes and fields. (make sure you copy this file to outside the CMB directory)
+ * Include and setup custom metaboxes and fields. (make sure you copy this file to outside the CMB2 directory)
  *
  * Be sure to replace all instances of 'yourprefix_' with your project's prefix.
  * http://nacin.com/2010/05/11/in-wordpress-prefix-everything/
  *
  * @category YourThemeOrPlugin
- * @package  Metaboxes
+ * @package  Demo_CMB2
  * @license  http://www.opensource.org/licenses/gpl-license.php GPL v2.0 (or later)
  * @link     https://github.com/WebDevStudios/CMB2
  */
@@ -19,6 +19,21 @@ if ( file_exists( dirname( __FILE__ ) . '/cmb2/init.php' ) ) {
 	require_once dirname( __FILE__ ) . '/cmb2/init.php';
 } elseif ( file_exists( dirname( __FILE__ ) . '/CMB2/init.php' ) ) {
 	require_once dirname( __FILE__ ) . '/CMB2/init.php';
+}
+
+/**
+ * Conditionally displays a metabox when used as a callback in the 'show_on_cb' cmb2_box parameter
+ *
+ * @param  CMB2 object $cmb CMB2 object
+ *
+ * @return bool             True if metabox should show
+ */
+function yourprefix_show_if_front_page( $cmb ) {
+	// Don't show this metabox if it's not the front page template
+	if ( $cmb->object_id !== get_option( 'page_on_front' ) ) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -50,9 +65,9 @@ function yourprefix_before_row_if_2( $field_args, $field ) {
 	}
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_demo_metabox' );
+add_action( 'cmb2_admin_init', 'yourprefix_register_demo_metabox' );
 /**
- * Hook in and add a demo metabox. Can only happen on the 'cmb2_init' hook.
+ * Hook in and add a demo metabox. Can only happen on the 'cmb2_admin_init' or 'cmb2_init' hook.
  */
 function yourprefix_register_demo_metabox() {
 
@@ -66,9 +81,10 @@ function yourprefix_register_demo_metabox() {
 		'id'            => $prefix . 'metabox',
 		'title'         => __( 'Test Metabox', 'cmb2' ),
 		'object_types'  => array( 'page', ), // Post type
-		'context'       => 'normal',
-		'priority'      => 'high',
-		'show_names'    => true, // Show field names on the left
+		// 'show_on_cb' => 'yourprefix_show_if_front_page', // function should return a bool value
+		// 'context'    => 'normal',
+		// 'priority'   => 'high',
+		// 'show_names' => true, // Show field names on the left
 		// 'cmb_styles' => false, // false to disable the CMB stylesheet
 		// 'closed'     => true, // true to keep the metabox closed by default
 	) );
@@ -157,12 +173,13 @@ function yourprefix_register_demo_metabox() {
 	// This text_datetime_timestamp_timezone field type
 	// is only compatible with PHP versions 5.3 or above.
 	// Feel free to uncomment and use if your server meets the requirement
-	// array(
+	// $cmb_demo->add_field( array(
 	// 	'name' => __( 'Test Date/Time Picker/Time zone Combo (serialized DateTime object)', 'cmb2' ),
 	// 	'desc' => __( 'field description (optional)', 'cmb2' ),
 	// 	'id'   => $prefix . 'datetime_timestamp_timezone',
 	// 	'type' => 'text_datetime_timestamp_timezone',
-	// ),
+	// ) );
+
 	$cmb_demo->add_field( array(
 		'name' => __( 'Test Money', 'cmb2' ),
 		'desc' => __( 'field description (optional)', 'cmb2' ),
@@ -209,11 +226,12 @@ function yourprefix_register_demo_metabox() {
 	) );
 
 	$cmb_demo->add_field( array(
-		'name'    => __( 'Test Select', 'cmb2' ),
-		'desc'    => __( 'field description (optional)', 'cmb2' ),
-		'id'      => $prefix . 'select',
-		'type'    => 'select',
-		'options' => array(
+		'name'             => __( 'Test Select', 'cmb2' ),
+		'desc'             => __( 'field description (optional)', 'cmb2' ),
+		'id'               => $prefix . 'select',
+		'type'             => 'select',
+		'show_option_none' => true,
+		'options'          => array(
 			'standard' => __( 'Option One', 'cmb2' ),
 			'custom'   => __( 'Option Two', 'cmb2' ),
 			'none'     => __( 'Option Three', 'cmb2' ),
@@ -221,11 +239,12 @@ function yourprefix_register_demo_metabox() {
 	) );
 
 	$cmb_demo->add_field( array(
-		'name'    => __( 'Test Radio inline', 'cmb2' ),
-		'desc'    => __( 'field description (optional)', 'cmb2' ),
-		'id'      => $prefix . 'radio_inline',
-		'type'    => 'radio_inline',
-		'options' => array(
+		'name'             => __( 'Test Radio inline', 'cmb2' ),
+		'desc'             => __( 'field description (optional)', 'cmb2' ),
+		'id'               => $prefix . 'radio_inline',
+		'type'             => 'radio_inline',
+		'show_option_none' => 'No Selection',
+		'options'          => array(
 			'standard' => __( 'Option One', 'cmb2' ),
 			'custom'   => __( 'Option Two', 'cmb2' ),
 			'none'     => __( 'Option Three', 'cmb2' ),
@@ -282,6 +301,7 @@ function yourprefix_register_demo_metabox() {
 		'desc'    => __( 'field description (optional)', 'cmb2' ),
 		'id'      => $prefix . 'multicheckbox',
 		'type'    => 'multicheck',
+		// 'multiple' => true, // Store values in individual rows
 		'options' => array(
 			'check1' => __( 'Check One', 'cmb2' ),
 			'check2' => __( 'Check Two', 'cmb2' ),
@@ -334,7 +354,7 @@ function yourprefix_register_demo_metabox() {
 
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_about_page_metabox' );
+add_action( 'cmb2_admin_init', 'yourprefix_register_about_page_metabox' );
 /**
  * Hook in and add a metabox that only appears on the 'About' page
  */
@@ -365,7 +385,7 @@ function yourprefix_register_about_page_metabox() {
 
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_repeatable_group_field_metabox' );
+add_action( 'cmb2_admin_init', 'yourprefix_register_repeatable_group_field_metabox' );
 /**
  * Hook in and add a metabox to demonstrate repeatable grouped fields
  */
@@ -393,6 +413,7 @@ function yourprefix_register_repeatable_group_field_metabox() {
 			'add_button'    => __( 'Add Another Entry', 'cmb2' ),
 			'remove_button' => __( 'Remove Entry', 'cmb2' ),
 			'sortable'      => true, // beta
+			// 'closed'     => true, // true to have the groups closed by default
 		),
 	) );
 
@@ -430,7 +451,7 @@ function yourprefix_register_repeatable_group_field_metabox() {
 
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_user_profile_metabox' );
+add_action( 'cmb2_admin_init', 'yourprefix_register_user_profile_metabox' );
 /**
  * Hook in and add a metabox to add fields to the user profile pages
  */
@@ -445,7 +466,7 @@ function yourprefix_register_user_profile_metabox() {
 	$cmb_user = new_cmb2_box( array(
 		'id'               => $prefix . 'edit',
 		'title'            => __( 'User Profile Metabox', 'cmb2' ),
-		'object_types'     => array( 'user' ), // Tells CMB to use user_meta vs post_meta
+		'object_types'     => array( 'user' ), // Tells CMB2 to use user_meta vs post_meta
 		'show_names'       => true,
 		'new_user_section' => 'add-new-user', // where form will show on new user page. 'add-existing-user' is only other valid option.
 	) );
@@ -502,7 +523,7 @@ function yourprefix_register_user_profile_metabox() {
 
 }
 
-add_action( 'cmb2_init', 'yourprefix_register_theme_options_metabox' );
+add_action( 'cmb2_admin_init', 'yourprefix_register_theme_options_metabox' );
 /**
  * Hook in and register a metabox to handle a theme options page
  */
