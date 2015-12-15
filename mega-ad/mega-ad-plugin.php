@@ -5,7 +5,7 @@
  * Description: This plugin creates a full screen ad with an expiration date.
  * Author: Simon Web Design, LLC
  * Author URI: http://simonwebdesign.com
- * Version: 0.5
+ * Version: 1.0.1
  * License: GPLv2
  */
 
@@ -77,6 +77,7 @@ function mega_ad_cmb2_metaboxes() {
 		'id'   => $prefix . 'textdate',
 		'type' => 'text_date',
 	) );	
+
 }
 
 

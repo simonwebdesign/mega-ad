@@ -12,8 +12,8 @@
 	min-height: 100%;
 
 	img {
-		max-width: 100%;
-		height: auto;
+		max-width: 600px;
+		max-height: auto;
 		margin: auto;
 		position: absolute;
 		top: 0; 
@@ -25,6 +25,10 @@
 }
 
 #dismiss {
+	font-family: Ionicons;
+	font-size: 42px;
+	text-align: center;
+	color: white;
 	position: absolute;
 	right: 0px;
 	top: 0px;
@@ -34,4 +38,3 @@
 	width: 80px;
 	height: 80px;
 }
-

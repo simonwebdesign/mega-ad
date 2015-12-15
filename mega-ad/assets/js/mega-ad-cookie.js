@@ -1,14 +1,15 @@
 /*
  * jQuery Cookie for Mega Ad With jQuery Cookie
  * Author: Simon Web Design, LLC
+ * Version: 1.0.0
  */
 
 jQuery(document).ready(function() {
 
-	if(!jQuery.cookie( 'mega-ad' )){
+	if(!jQuery.cookie( 'mega-ad' )) {
 
 		/* Cookie Not Detected Show Mega Ad */
-		jQuery( '#mega_ad_wrap' ).fadeIn(0);
+		jQuery( '#mega_ad_wrap' ).fadeIn(500);
 		jQuery( 'body' ).addClass('has-message');
 
 		/* Mega Ad CSS Scroll Fix */

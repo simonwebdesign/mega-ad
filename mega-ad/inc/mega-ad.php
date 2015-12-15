@@ -16,17 +16,21 @@ function swd_ma_scripts() {
 
 	    //echo 'expiration ID on the first post found' . $swd_ma_status[0]->ID; //For debugging
 
-	    $mega_ad_id = $swd_ma_status[0]->ID;
+	    $mega_ad_id       = $swd_ma_status[0]->ID;
 		$expiration_date  = get_post_meta( $mega_ad_id, '_swd_ma_textdate', true );
-		$current_time = date_i18n( 'm/d/Y' );
+		$current_time     = date_i18n( 'm/d/Y' );
 
 		if( $expiration_date >= $current_time ) {
 
-			wp_enqueue_style( 'mega-ad', SWD_MA_URL . '/css/style.css' ); // Mega Ad Styles
-			wp_enqueue_script( 'mega-ad-cookie-helper', SWD_MA_URL . '/js/mega-ad-cookie.js' ); // This sets the cookie
-			wp_enqueue_script( 'mega-ad-cookie', SWD_MA_URL . '/js/jquery.cookie.js' ); // This is the cookie jQuery plugin
+			wp_enqueue_style( 'mega-ad-ionicons', SWD_MA_URL . '/css/ionicons.min.css', array(), '2.0.1' ); // Get Ionicons
+			wp_enqueue_style( 'mega-ad', SWD_MA_URL . '/css/style.css', array(), '1.0.0'  ); // Mega Ad Styles
+			wp_enqueue_script( 'mega-ad-cookie-helper', SWD_MA_URL . '/js/mega-ad-cookie.js', array(), '1.0.0'  ); // This sets the cookie
+			wp_enqueue_script( 'mega-ad-cookie', SWD_MA_URL . '/js/jquery.cookie.js', array(), '1.4.1'  ); // This is the cookie jQuery plugin
+		
 		}
+
 	}
+
 }
 add_action( 'wp_head', 'swd_ma_scripts' );
 
@@ -44,26 +48,28 @@ function swd_ma_query() {
 	$swd_ma_status = get_posts( $args );
 	if( $swd_ma_status ) {
 
-	    $mega_ad_id = $swd_ma_status[0]->ID;
+	    $mega_ad_id       = $swd_ma_status[0]->ID;
 		$expiration_date  = get_post_meta( $mega_ad_id, '_swd_ma_textdate', true );
-		$current_time = date_i18n( 'm/d/Y' );
+		$current_time     = date_i18n( 'm/d/Y' );
 
 		if( $expiration_date >= $current_time ) {
 			?>
 				<?php $image  = get_post_meta( $mega_ad_id, '_swd_ma_image', true ); ?>
-				<?php $url   = get_post_meta( $mega_ad_id, '_swd_ma_url', true ); ?>
+				<?php $url    = get_post_meta( $mega_ad_id, '_swd_ma_url', true ); ?>
 				
 				<div id="mega_ad_wrap" style="display: none;">
 					<div id="dismiss">
-						<?php echo '<img src="' . SWD_MA_URL . '/images/close-message.png" > '; ?>
+						<i class="icon ion-android-close"></i>
 					</div>
 					<div id="mega_ad">
-						<a href="<?php echo $url; ?>"/><img src="<?php echo $image; ?>" border="0" /></a>
+						<a href="<?php echo esc_url( $url ); ?>"/><img src="<?php echo esc_url( $image ); ?>" border="0" /></a>
 					</div>
 				</div>
 			<?php
 		} // Mega Ad Ends here
+
 	}
+
 }
 add_action( 'wp_footer', 'swd_ma_query' );
 
