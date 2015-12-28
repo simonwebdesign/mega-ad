@@ -62,7 +62,9 @@ function swd_ma_query() {
 						<i class="icon ion-android-close"></i>
 					</div>
 					<div id="mega_ad">
-						<a href="<?php echo esc_url( $url ); ?>"/><img src="<?php echo esc_url( $image ); ?>" border="0" /></a>
+						<div class="mega_ad_inner_wrap">
+							<a href="<?php echo esc_url( $url ); ?>"/><img src="<?php echo esc_url( $image ); ?>" border="0" /></a>
+						</div>
 					</div>
 				</div>
 			<?php
