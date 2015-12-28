@@ -5,19 +5,17 @@
   position: absolute;
   top: 0px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  background-position: center top;
-  background-size: cover;
-  min-height: 100%; }
-  #mega_ad_wrap img {
-    max-width: 600px;
-    max-height: auto;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0; }
+  background: rgba(0, 0, 0, 0.75);
+  height: 100%;
+  display: table; }
+  #mega_ad_wrap #mega_ad {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    max-width: 100%;
+    border: solid 1px white; }
+    #mega_ad_wrap #mega_ad img {
+      max-width: 640px; }
 
 #dismiss {
   font-family: Ionicons;
