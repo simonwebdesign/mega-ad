@@ -9,23 +9,57 @@ jobs:
   deploy:
     name: Deploy to WordPress.org SVN
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:20.04
 
     steps:
+      - name: Install dependencies
+        run: |
+          apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive apt-get install -y subversion rsync git
+          svn --version | head -1
+
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure SVN for WordPress.org compatibility
-        run: |
-          mkdir -p ~/.subversion
-          cat > ~/.subversion/servers << 'EOF'
-          [global]
-          http-auth-types = basic
-          http-bulk-updates = no
-          EOF
-
-      - name: Deploy to WordPress.org
-        uses: 10up/action-wordpress-plugin-deploy@stable
+      - name: Deploy to WordPress.org SVN
         env:
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SLUG: mega-ad
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          SVN_URL="https://plugins.svn.wordpress.org/mega-ad"
+          VERSION=$(grep "Version:" mega-ad-plugin.php | sed 's/.*Version: *//')
+
+          echo "Deploying version $VERSION..."
+
+          # Checkout full SVN repo
+          svn checkout "$SVN_URL" /tmp/svn \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --no-auth-cache --non-interactive
+
+          # Sync plugin files into trunk
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='.wp-env.json' \
+            ./ /tmp/svn/trunk/
+
+          cd /tmp/svn
+
+          # Stage new files
+          svn add --force trunk/ --auto-props
+
+          # Remove deleted files
+          svn status | grep '^\!' | awk '{print $2}' | xargs -r svn rm
+
+          # Create version tag
+          svn cp trunk "tags/$VERSION" 2>/dev/null || echo "Tag already exists, skipping."
+
+          # Commit everything
+          svn commit \
+            -m "Version $VERSION" \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --no-auth-cache --non-interactive
