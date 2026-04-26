@@ -54,8 +54,9 @@ jobs:
           # Remove deleted files
           svn status | grep '^\!' | awk '{print $2}' | xargs -r svn rm
 
-          # Create version tag
-          svn cp trunk "tags/$VERSION" 2>/dev/null || echo "Tag already exists, skipping."
+          # Create version tag (delete first if it already exists)
+          svn rm "tags/$VERSION" 2>/dev/null || true
+          svn cp trunk "tags/$VERSION"
 
           # Commit everything
           svn commit \
