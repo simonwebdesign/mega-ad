@@ -8,11 +8,20 @@ on:
 jobs:
   deploy:
     name: Deploy to WordPress.org SVN
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Configure SVN for WordPress.org compatibility
+        run: |
+          mkdir -p ~/.subversion
+          cat > ~/.subversion/servers << 'EOF'
+          [global]
+          http-auth-types = basic
+          http-bulk-updates = no
+          EOF
 
       - name: Deploy to WordPress.org
         uses: 10up/action-wordpress-plugin-deploy@stable
