@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy to WordPress.org SVN
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout code
