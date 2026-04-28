@@ -4,7 +4,7 @@ Donate link: http://simonwebdesign.com/donate
 Tags: fullscreen, ad, expiration
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -46,6 +46,9 @@ Yes. You can set a delay in seconds before the ad appears.
 == Screenshots ==
 
 == Changelog ==
+
+= 2.0.1 =
+* Fix dismiss button clipping on small screens — added 36px viewport margin
 
 = 2.0.0 =
 * PHP 8.x compatibility fixes
