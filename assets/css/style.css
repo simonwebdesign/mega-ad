@@ -11,6 +11,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding: 36px;
+	box-sizing: border-box;
 	animation: megaAdFadeIn 0.35s ease;
 }
 
@@ -22,8 +24,7 @@
 #mega-ad {
 	position: relative;
 	max-width: 700px;
-	width: 90%;
-	margin: 36px;
+	width: 100%;
 }
 
 .mega-ad-inner {
@@ -41,11 +42,11 @@
 	border-radius: 4px;
 }
 
-/* Close button — pure CSS, no icon font needed */
+/* Close button — fixed to viewport so it's always visible */
 #mega-ad-dismiss {
-	position: absolute;
-	top: -22px;
-	right: -22px;
+	position: fixed;
+	top: 15px;
+	right: 15px;
 	width: 44px;
 	height: 44px;
 	background: rgba(255, 255, 255, 0.15);
